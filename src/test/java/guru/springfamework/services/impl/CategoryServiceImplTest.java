@@ -1,14 +1,13 @@
-package guru.springfamework.servicies.impl;
+package guru.springfamework.services.impl;
 
 import guru.springfamework.api.v1.mapper.CategoryMapper;
 import guru.springfamework.api.v1.model.CategoryDTO;
 import guru.springfamework.domain.Category;
 import guru.springfamework.repositories.CategoryRepository;
-import guru.springfamework.servicies.CategoryService;
+import guru.springfamework.services.CategoryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
