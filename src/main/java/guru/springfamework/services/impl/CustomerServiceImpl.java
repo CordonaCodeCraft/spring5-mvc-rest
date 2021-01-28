@@ -8,9 +8,7 @@ import guru.springfamework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +30,9 @@ public class CustomerServiceImpl implements CustomerService {
                 .findAll()
                 .stream()
                 .map(customer -> {
-                   CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                   customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
-                   return customerDTO;
+                    CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
+                    customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+                    return customerDTO;
                 })
                 .collect(Collectors.toList());
     }
@@ -42,22 +40,32 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO getCustomerById(Long id) {
 
-        Optional<Customer> customer = customerRepository.findById(id);
-
-        return customer.map(customerMapper::customerToCustomerDTO).orElse(null);
+        return customerRepository.findById(id)
+                .map(customerMapper::customerToCustomerDTO)
+                .map(customerDTO -> {
+                    //set API URL
+                    customerDTO.setCustomerUrl("/api/v1/customer/" + id);
+                    return customerDTO;
+                })
+                .orElseThrow(RuntimeException::new); //todo implement better exception handling
     }
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        return saveAndReturnDTO(customerMapper.customerDtoToCustomer(customerDTO));
+    }
 
-        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
-
+    private CustomerDTO saveAndReturnDTO(Customer customer) {
         Customer savedCustomer = customerRepository.save(customer);
+        CustomerDTO returnDto = customerMapper.customerToCustomerDTO(savedCustomer);
+        returnDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+        return returnDto;
+    }
 
-        CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(savedCustomer);
-
-        returnDTO.setCustomerUrl("/api/v1/customers/" + savedCustomer.getId());
-
-        return returnDTO;
+    @Override
+    public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        customer.setId(id);
+        return saveAndReturnDTO(customer);
     }
 }
