@@ -4,7 +4,6 @@ import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
-import guru.springfamework.services.CustomerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -14,17 +13,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Optional.ofNullable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceImplTest {
 
     private final Long ID = 1L;
 
-    CustomerService customerService;
+    CustomerServiceImpl customerService;
+    CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
     @Mock
     CustomerRepository customerRepository;
@@ -33,8 +32,31 @@ public class CustomerServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
+        customerService = new CustomerServiceImpl(customerMapper, customerRepository);
     }
+
+
+    @Test
+    public void createNewCustomer() {
+
+        CustomerDTO customerDTO = CustomerDTO
+                .builder()
+                .firstName("Endios")
+                .lastName("Deloro")
+                .build();
+
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        customer.setId(1L);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+
+        CustomerDTO savedCustomer = customerService.createNewCustomer(customerDTO);
+
+        assertEquals(customerDTO.getFirstName(), savedCustomer.getFirstName());
+
+        assertEquals("/api/v1/customers/1",savedCustomer.getCustomerUrl());
+    }
+
 
     @Test
     public void testGetAllCustomers() {
@@ -49,13 +71,13 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testFindById() {
-        Customer customer = Customer.builder().id(ID).build();
+        Customer customer = Customer.builder().id(ID).firstName("Michale").build();
 
         when(customerRepository.findById(ID)).thenReturn(Optional.of(customer));
 
-        CustomerDTO customerDTO = customerService.findById(ID);
+        CustomerDTO customerDTO = customerService.getCustomerById(ID);
 
-//        assertEquals(ID, customerDTO.getId());
+        assertEquals("Michale", customerDTO.getFirstName());
     }
 
     @Test
@@ -64,8 +86,10 @@ public class CustomerServiceImplTest {
 
         when(customerRepository.findById(ID)).thenReturn(Optional.of(customer));
 
-        CustomerDTO customerDTO = customerService.findById(2L);
+        CustomerDTO customerDTO = customerService.getCustomerById(2L);
 
         assertNull(customerDTO);
     }
+
+
 }
