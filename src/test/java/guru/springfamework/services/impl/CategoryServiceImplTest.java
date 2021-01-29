@@ -39,8 +39,6 @@ public class CategoryServiceImplTest {
         List<CategoryDTO> categoryDTOS = categoryService.getAllCategories();
 
         assertEquals(3, categoryDTOS.size());
-
-
     }
 
     @Test
