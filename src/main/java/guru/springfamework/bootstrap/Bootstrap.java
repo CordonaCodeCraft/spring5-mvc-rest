@@ -2,25 +2,31 @@ package guru.springfamework.bootstrap;
 
 import guru.springfamework.domain.Category;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.domain.Vendor;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
+import guru.springfamework.repositories.VendorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * Created by jt on 9/24/17.
  */
 @Component
 @Slf4j
-public class Bootstrap implements CommandLineRunner{
+public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final CustomerRepository customerRepository;
+    private final VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
@@ -28,8 +34,10 @@ public class Bootstrap implements CommandLineRunner{
 
         loadCategories();
         loadCustomers();
+        loadVendors();
 
     }
+
 
     private void loadCustomers() {
 
@@ -68,5 +76,18 @@ public class Bootstrap implements CommandLineRunner{
         categoryRepository.save(nuts);
 
         log.info(String.format("Saved %d categories", categoryRepository.count()));
+    }
+
+    private void loadVendors() {
+
+        Vendor first = Vendor.builder().name("First").build();
+        Vendor second = Vendor.builder().name("Second").build();
+        Vendor third = Vendor.builder().name("Third").build();
+        vendorRepository.saveAll(Arrays.asList(first, second, third));
+
+        log.info(String.format("Saved %d vendors", vendorRepository.count()));
+
+        System.out.println();
+
     }
 }
