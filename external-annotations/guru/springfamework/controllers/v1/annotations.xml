@@ -1,0 +1,37 @@
+<root>
+    <item name='guru.springfamework.controllers.v1.VendorController'>
+        <annotation name='io.swagger.annotations.Api'>
+            <val name="description" val="&quot;This is my Vendor API&quot;"/>
+        </annotation>
+    </item>
+    <item name='guru.springfamework.controllers.v1.VendorController guru.springfamework.api.v1.model.VendorDTO createNewVendor(guru.springfamework.api.v1.model.VendorDTO)'>
+        <annotation name='io.swagger.annotations.ApiOperation'>
+            <val name="value" val="&quot;Create new vendor&quot;"/>
+            <val name="notes" val="&quot;These are some API notes&quot;"/>
+        </annotation>
+    </item>
+    <item name='guru.springfamework.controllers.v1.VendorController guru.springfamework.api.v1.model.VendorDTO findById(java.lang.Long)'>
+        <annotation name='io.swagger.annotations.ApiOperation'>
+            <val name="value" val="&quot;Get Vendor by ID&quot;"/>
+            <val name="notes" val="&quot;These are some API notes&quot;"/>
+        </annotation>
+    </item>
+    <item name='guru.springfamework.controllers.v1.VendorController guru.springfamework.api.v1.model.VendorDTO updateVendor(java.lang.Long, guru.springfamework.api.v1.model.VendorDTO)'>
+        <annotation name='io.swagger.annotations.ApiOperation'>
+            <val name="value" val="&quot;Update vendor&quot;"/>
+            <val name="notes" val="&quot;These are some API notes&quot;"/>
+        </annotation>
+    </item>
+    <item name='guru.springfamework.controllers.v1.VendorController guru.springfamework.api.v1.model.VendorListDTO getAllVendors()'>
+        <annotation name='io.swagger.annotations.ApiOperation'>
+            <val name="value" val="&quot;View list of Vendors&quot;"/>
+            <val name="notes" val="&quot;These are some API notes&quot;"/>
+        </annotation>
+    </item>
+    <item name='guru.springfamework.controllers.v1.VendorController java.lang.Void deleteByID(java.lang.Long)'>
+        <annotation name='io.swagger.annotations.ApiOperation'>
+            <val name="value" val="&quot;Delete vendor&quot;"/>
+            <val name="notes" val="&quot;These are some API notes&quot;"/>
+        </annotation>
+    </item>
+</root>

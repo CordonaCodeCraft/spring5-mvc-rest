@@ -1,0 +1,7 @@
+<root>
+    <item name='guru.springfamework.api.v1.model.CustomerDTO firstName'>
+        <annotation name='io.swagger.annotations.ApiModelProperty'>
+            <val name="required" val="true"/>
+        </annotation>
+    </item>
+</root>
