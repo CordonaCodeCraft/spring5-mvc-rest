@@ -16,14 +16,13 @@ import java.util.Arrays;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.BDDMockito.*;
 
 
 public class VendorControllerTest {
@@ -56,7 +55,9 @@ public class VendorControllerTest {
         when(vendorService.getAllVendors()).thenReturn(vendors);
 
         mockMvc
-                .perform(get(VendorController.VENDOR_BASE_URL).contentType(MediaType.APPLICATION_JSON))
+                .perform(get(VendorController.VENDOR_BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.vendors", hasSize(3)));
     }
@@ -68,7 +69,9 @@ public class VendorControllerTest {
 
         when(vendorService.getVendorById(anyLong())).thenReturn(input);
 
-        mockMvc.perform(get(VendorController.VENDOR_BASE_URL + 1L).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(VendorController.VENDOR_BASE_URL + 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$.name", equalTo("Vendor")));
     }
@@ -83,8 +86,10 @@ public class VendorControllerTest {
                 .build();
 
         given(vendorService.createNewVendor(input)).willReturn(input);
-        
-        mockMvc.perform(post(VendorController.VENDOR_BASE_URL).contentType(MediaType.APPLICATION_JSON))
+
+        mockMvc.perform(post(VendorController.VENDOR_BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo("Vendor")));
 

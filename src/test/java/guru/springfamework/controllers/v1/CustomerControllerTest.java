@@ -52,7 +52,9 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
         when(customerService.getAllCustomers()).thenReturn(customers);
 
         mockMvc
-                .perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON))
+                .perform(get(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(3)));
     }
@@ -67,7 +69,9 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
 
-        mockMvc.perform(get(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_URL + "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo("Michale")));
     }
@@ -89,6 +93,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
         //when/then
         mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customer)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", equalTo("Fred")))
@@ -112,6 +117,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
         //when/then
         mockMvc.perform(put(BASE_URL + "1")
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customer)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo("Fred")))
@@ -135,6 +141,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         mockMvc.perform(patch(BASE_URL + "1")
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customer)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo("Fred")))
